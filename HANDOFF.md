@@ -14,7 +14,7 @@
 ## Known limitations (carry forward)
 
 - **Intent classifier doesn't distinguish weapon-upgrade vs armor-upgrade within `progression` intent.** Surfaced by Q6 in `tests/eval-queries.ts` ("I just got the Aqua Scepter, anything stronger?") — retrieval correctly pulled Aqua Scepter + Bat Scepter (a stronger weapon) into top-8, but the LLM picked Meteor/Ancient Cobalt armor recommendations because the synth pass and prompt both default to forward-tier mage gear without a class-of-item bias. Future work: either a second-level intent (weapon-progression vs armor-progression) routed off keywords in the user query, or weapon-only and armor-only synth variants merged at top-K. Not blocking; only borderline on this one query shape.
-- **Wiki image cache-buster.** See M2 build log. Stored `?<hash>` URLs may 404 if upstream regenerates assets; recovery is `rm -rf data/raw data/parsed && pnpm scrape && pnpm index`.
+- **Wiki image cache-buster.** See M2 build log. Stored `?<hash>` URLs may 404 if upstream regenerates assets; recovery is `pnpm scrape:refresh` (clears `data/raw` + `data/parsed`, re-scrapes, re-indexes).
 - **Mid-stream progression edit shows a header/body mismatch** for ~1–4s. Old in-flight stream completes with old progression context; the panel header updates immediately to new state. Next query uses new state. Accepted as known behavior.
 
 ---
@@ -396,7 +396,7 @@ $ curl -X POST /api/query -d '{"query":"what should I look out for in the Jungle
 **Wiki image cache-buster (future failure mode):**
 - `terraria.wiki.gg` serves infobox images with a query-string cache buster, e.g. `/images/Water_Bolt.png?8f25bf`. The scraper captures these verbatim into `primary_image_url`, which gets stored in `data/index.json` and emitted in the LLM context's `image_url` field.
 - If those hashes change on the wiki side (asset regenerated, new file version, etc.), our stored URLs 404. Cards will render the parchment fallback even though we have an image URL recorded.
-- **Recovery: re-run `pnpm scrape` (resumable cache will refetch only changed pages? No — current scraper skips on disk presence; force-refresh requires `rm -rf data/raw data/parsed` first) + `pnpm index`.**
+- **Recovery: `pnpm scrape:refresh` (clears `data/raw` + `data/parsed`, re-scrapes, re-indexes). A bare `pnpm scrape` won't help — the resumable cache skips pages already on disk; only the cleared-then-rescraped flow picks up new hashes.**
 - Not blocking. If images stop loading weeks from now, this is the first thing to check.
 
 **Open items for M5 smoke:**

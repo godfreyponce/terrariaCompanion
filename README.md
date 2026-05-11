@@ -29,7 +29,7 @@ pnpm index                        # one-time, ~1 min, costs ~$0.09
 pnpm dev                          # open http://localhost:3000
 ```
 
-Per-query cost is ~$0.0003. Re-running `pnpm scrape && pnpm index` picks up new wiki content; the scraper skips pages already on disk, so `rm -rf data/raw data/parsed` first for a full refresh.
+Per-query cost is ~$0.0003. Re-running `pnpm scrape && pnpm index` picks up new wiki content; the scraper skips pages already on disk, so use `pnpm scrape:refresh` for a full refresh (clears `data/raw` + `data/parsed`, re-scrapes, re-indexes).
 
 Useful checks:
 

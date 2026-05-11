@@ -11,6 +11,7 @@
     "test": "vitest run",
     "test:watch": "vitest",
     "scrape": "tsx scripts/scrape.ts",
+    "scrape:refresh": "rm -rf data/raw data/parsed && pnpm scrape && pnpm index",
     "index": "tsx scripts/index.ts"
   },
   "dependencies": {

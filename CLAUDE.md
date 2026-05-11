@@ -68,3 +68,4 @@ pnpm dev          # smoke test in browser when relevant
 - **Resume here:** @HANDOFF.md — status, embedded plan, and next-milestone checklist. Read first on every new session.
 - README: @README.md (once written)
 - Scripts: @package.json
+- **Retrieval architecture:** dual-pass cosine retrieval + regex intent classifier (`warning` / `progression` / `general`). See HANDOFF M5.5 build log for the design rationale.
