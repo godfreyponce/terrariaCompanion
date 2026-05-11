@@ -1,0 +1,44 @@
+node_modules
+.pnpm-store
+.next
+out
+dist
+.env
+.env.local
+.env.*.local
+data/raw
+data/parsed
+data/index.json
+data/progression.json
+.DS_Store
+*.log
+next-env.d.ts
+
+# Editor / IDE
+.vscode/
+.idea/
+*.swp
+
+# Test coverage
+coverage/
+
+# TypeScript build info
+*.tsbuildinfo
+
+# Claude Code session artifacts
+.claude/
+
+# Temp / scratch
+/tmp/
+HANDOFF.md.bak
+
+# More data artifacts
+data/index.sample.json
+data/progression.json
+
+# Any data files — only data/ structure should be tracked
+data/*.json
+
+# Any data files — only data/ structure should be tracked
+data/*.json
+!data/.gitkeep
