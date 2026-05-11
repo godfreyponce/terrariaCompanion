@@ -1,17 +1,17 @@
 "use client";
-import { forwardRef, useState, FormEvent } from "react";
+import { forwardRef, FormEvent } from "react";
 
 type Props = {
+  value: string;
+  onChange: (v: string) => void;
   onSubmit: (query: string) => void;
   disabled?: boolean;
 };
 
 export const QueryBar = forwardRef<HTMLInputElement, Props>(function QueryBar(
-  { onSubmit, disabled },
+  { value, onChange, onSubmit, disabled },
   ref,
 ) {
-  const [value, setValue] = useState("");
-
   function handleSubmit(e: FormEvent) {
     e.preventDefault();
     const q = value.trim();
@@ -28,12 +28,9 @@ export const QueryBar = forwardRef<HTMLInputElement, Props>(function QueryBar(
         <input
           ref={ref}
           value={value}
-          onChange={(e) => setValue(e.target.value)}
+          onChange={(e) => onChange(e.target.value)}
           onKeyDown={(e) => {
-            if (e.key === "Escape") {
-              setValue("");
-              e.currentTarget.blur();
-            }
+            if (e.key === "Escape") e.currentTarget.blur();
           }}
           autoFocus
           autoComplete="off"

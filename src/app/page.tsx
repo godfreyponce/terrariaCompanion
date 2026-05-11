@@ -2,6 +2,7 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import { parse as partialParse, Allow } from "partial-json";
 import { QueryBar } from "@/components/QueryBar";
+import { QueryExamples } from "@/components/QueryExamples";
 import { ResponseCard, SkeletonCard } from "@/components/ResponseCard";
 import { WarningsPanel } from "@/components/WarningsPanel";
 import { NextSteps } from "@/components/NextSteps";
@@ -51,6 +52,7 @@ export default function Home() {
   const abortRef = useRef<AbortController | null>(null);
   const [progression, setProgression] = useState<Progression | null>(null);
   const [progressionOpen, setProgressionOpen] = useState(false);
+  const [query, setQuery] = useState("");
   const [response, setResponse] = useState<QueryResponse | null>(null);
   const [streaming, setStreaming] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -72,6 +74,7 @@ export default function Home() {
         e.preventDefault();
         setProgressionOpen((v) => !v);
       } else if (e.key === "Escape") {
+        setQuery("");
         setResponse(null);
         setSubmittedQuery(null);
         setError(null);
@@ -215,7 +218,22 @@ export default function Home() {
         )}
       </header>
 
-      <QueryBar ref={inputRef} onSubmit={submit} disabled={streaming || !progression} />
+      <QueryBar
+        ref={inputRef}
+        value={query}
+        onChange={setQuery}
+        onSubmit={submit}
+        disabled={streaming || !progression}
+      />
+
+      {!streaming && !response ? (
+        <QueryExamples
+          onPick={(q) => {
+            setQuery(q);
+            inputRef.current?.focus();
+          }}
+        />
+      ) : null}
 
       <section className="space-y-3" aria-live="polite" aria-busy={streaming}>
         {error ? (
