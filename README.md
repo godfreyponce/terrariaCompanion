@@ -8,6 +8,20 @@ I started playing Terraria for the first time and I felt knowledgeless. Reading 
 
 Currently not deployed.
 
+## Run it
+
+The wiki data is gitignored, so a fresh clone has nothing to search yet. You need an OpenAI API key and one scrape first.
+
+```bash
+pnpm install
+cp .env.example .env.local   # add your OPENAI_API_KEY
+pnpm scrape                  # about 425 wiki pages at 1 request per second
+pnpm index                   # embeds the pages, this is the step that uses your key
+pnpm dev
+```
+
+Then open http://localhost:3000.
+
 ## Architecture
 
 - **Runtime/framework:** Next.js 15, Single-page UI, streaming response, parchment warm dark theme.
